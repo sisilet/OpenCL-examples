@@ -1,10 +1,6 @@
 #include <iostream>
 #include <ctime>
-#ifdef __APPLE__
-    #include <OpenCL/cl.hpp>
-#else
-    #include <CL/cl.hpp>
-#endif
+#include <CL/cl.hpp>
 
 #define NUM_GLOBAL_WITEMS 1024
 
@@ -26,7 +22,10 @@ double timeAddVectorsCPU(int n, int k) {
     std::clock_t start;
     double duration;
 
-    int A[n], B[n], C[n];
+	int* A = new int[n];
+	int* B = new int[n];
+	int* C = new int[n];
+	
     for (int i=0; i<n; i++) {
         A[i] = i;
         B[i] = n-i;
@@ -40,13 +39,15 @@ double timeAddVectorsCPU(int n, int k) {
     }
 
     duration = (std::clock() - start) / (double) CLOCKS_PER_SEC;
+
+	delete A, B, C;
     return duration;
 }
 
 
 void warmup(cl::Context &context, cl::CommandQueue &queue, 
             cl::Kernel &add, int A[], int B[], int n) {
-    int C[n];
+    int* C = new int[n];
     // allocate space
     cl::Buffer buffer_A(context, CL_MEM_READ_WRITE, sizeof(int) * n);
     cl::Buffer buffer_B(context, CL_MEM_READ_WRITE, sizeof(int) * n);
@@ -64,7 +65,9 @@ void warmup(cl::Context &context, cl::CommandQueue &queue,
         queue.enqueueNDRangeKernel(add, cl::NullRange, cl::NDRange(NUM_GLOBAL_WITEMS), cl::NDRange(32));              
    
     queue.enqueueReadBuffer(buffer_C, CL_TRUE, 0, sizeof(int)*n, C); 
-    queue.finish(); 
+    queue.finish();
+
+	delete C;
 }
 
 

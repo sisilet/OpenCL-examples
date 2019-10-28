@@ -5,12 +5,12 @@
 #pragma OPENCL EXTENSION cl_khr_fp64 : enable
  
 const char *kernelSource =
-"#pragma OPENCL EXTENSION cl_khr_fp64 : enable   \n"  \ 
-"__kernel void mult(__global double *v) {  \n" \
-"    int id;                   \n" \
-"    id = get_global_id(0);    \n" \
-"    v[id] = 2*v[id];        \n" \
-"}                             \n" \
+"#pragma OPENCL EXTENSION cl_khr_fp64 : enable   \n"   
+"__kernel void mult(__global double *v) {  \n" 
+"    int id;                   \n" 
+"    id = get_global_id(0);    \n" 
+"    v[id] = 2*v[id];        \n" 
+"}                             \n" 
 "\n" ;
  
 int main( int argc, char* argv[] ) {

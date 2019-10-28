@@ -1,11 +1,7 @@
 #include <iostream>
 #include <algorithm>
 #include <iterator>
-#ifdef __APPLE__
-    #include <OpenCL/cl.hpp>
-#else
-    #include <CL/cl.hpp>
-#endif
+#include <CL/cl.hpp>
 
 using namespace std;
 using namespace cl;
